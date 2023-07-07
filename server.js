@@ -380,6 +380,7 @@ app.get('/version', function (_, response) {
 
 //**************Kobold api
 app.post("/generate", jsonParser, async function (request, response_generate = response) {
+    console.log("/generate")
     if (!request.body) return response_generate.sendStatus(400);
 
     const request_prompt = request.body.prompt;
@@ -2009,6 +2010,7 @@ app.post("/exportchat", jsonParser, async function (request, response) {
 })
 
 app.post("/exportcharacter", jsonParser, async function (request, response) {
+    console.log('/exportcharacter')
     if (!request.body.format || !request.body.avatar_url) {
         return response.sendStatus(400);
     }
@@ -2070,6 +2072,7 @@ app.post("/exportcharacter", jsonParser, async function (request, response) {
 });
 
 app.post("/importgroupchat", urlencodedParser, function (request, response) {
+    console.log('/importgroupchat')
     try {
         const filedata = request.file;
         const chatname = humanizedISO8601DateTime();
@@ -2082,6 +2085,7 @@ app.post("/importgroupchat", urlencodedParser, function (request, response) {
 });
 
 app.post("/importchat", urlencodedParser, function (request, response) {
+    console.log('/importchat')
     if (!request.body) return response.sendStatus(400);
 
     var format = request.body.file_type;
@@ -2212,6 +2216,7 @@ app.post("/importchat", urlencodedParser, function (request, response) {
 });
 
 app.post('/importworldinfo', urlencodedParser, (request, response) => {
+    console.log('/importworldinfo')
     if (!request.file) return response.sendStatus(400);
 
     const filename = `${path.parse(sanitize(request.file.originalname)).name}.json`;
@@ -2246,6 +2251,7 @@ app.post('/importworldinfo', urlencodedParser, (request, response) => {
 });
 
 app.post('/editworldinfo', jsonParser, (request, response) => {
+    console.log('/editworldinfo')
     if (!request.body) {
         return response.sendStatus(400);
     }
@@ -2271,6 +2277,7 @@ app.post('/editworldinfo', jsonParser, (request, response) => {
 });
 
 app.post('/uploaduseravatar', urlencodedParser, async (request, response) => {
+    console.log('/uploaduseravatar')
     if (!request.file) return response.sendStatus(400);
 
     try {
@@ -2295,6 +2302,7 @@ app.post('/uploaduseravatar', urlencodedParser, async (request, response) => {
 });
 
 app.post('/getgroups', jsonParser, (_, response) => {
+    console.log('/getgroups')
     const groups = [];
 
     if (!fs.existsSync(directories.groups)) {
@@ -2338,6 +2346,7 @@ app.post('/getgroups', jsonParser, (_, response) => {
 });
 
 app.post('/creategroup', jsonParser, (request, response) => {
+    console.log('/creategroup')
     if (!request.body) {
         return response.sendStatus(400);
     }
@@ -2368,6 +2377,7 @@ app.post('/creategroup', jsonParser, (request, response) => {
 });
 
 app.post('/editgroup', jsonParser, (request, response) => {
+    console.log('/editgroup')
     if (!request.body || !request.body.id) {
         return response.sendStatus(400);
     }
@@ -2380,6 +2390,7 @@ app.post('/editgroup', jsonParser, (request, response) => {
 });
 
 app.post('/getgroupchat', jsonParser, (request, response) => {
+    console.log('/getgroupchat')
     if (!request.body || !request.body.id) {
         return response.sendStatus(400);
     }
@@ -2400,6 +2411,7 @@ app.post('/getgroupchat', jsonParser, (request, response) => {
 });
 
 app.post('/deletegroupchat', jsonParser, (request, response) => {
+    console.log('/deletegroupchat')
     if (!request.body || !request.body.id) {
         return response.sendStatus(400);
     }
@@ -2416,6 +2428,7 @@ app.post('/deletegroupchat', jsonParser, (request, response) => {
 });
 
 app.post('/savegroupchat', jsonParser, (request, response) => {
+    console.log('/savegroupchat')
     if (!request.body || !request.body.id) {
         return response.sendStatus(400);
     }
@@ -2434,6 +2447,7 @@ app.post('/savegroupchat', jsonParser, (request, response) => {
 });
 
 app.post('/deletegroup', jsonParser, async (request, response) => {
+    console.log('/deletegroup')
     if (!request.body || !request.body.id) {
         return response.sendStatus(400);
     }
@@ -2486,6 +2500,7 @@ async function getPoeClient(token, useCache = false) {
 }
 
 app.post('/status_poe', jsonParser, async (request, response) => {
+    console.log('/status_poe')
     const token = readSecret(SECRET_KEYS.POE);
 
     if (!token) {
@@ -2506,6 +2521,7 @@ app.post('/status_poe', jsonParser, async (request, response) => {
 });
 
 app.post('/purge_poe', jsonParser, async (request, response) => {
+    console.log('/purge_poe')
     const token = readSecret(SECRET_KEYS.POE);
 
     if (!token) {
@@ -2534,6 +2550,7 @@ app.post('/purge_poe', jsonParser, async (request, response) => {
 });
 
 app.post('/generate_poe', jsonParser, async (request, response) => {
+    console.log('/generate_poe')
     if (!request.body.prompt) {
         return response.sendStatus(400);
     }
@@ -2621,6 +2638,7 @@ app.post('/generate_poe', jsonParser, async (request, response) => {
 });
 
 app.post('/poe_suggest', jsonParser, async function (request, response) {
+    console.log('/poe_suggest')
     const token = readSecret(SECRET_KEYS.POE);
     const messageId = request.body.messageId;
 
@@ -2708,6 +2726,7 @@ app.post('/poe_suggest', jsonParser, async function (request, response) {
 });
 
 app.get('/discover_extensions', jsonParser, function (_, response) {
+    console.log('/discover_extensions')
     const extensions = fs
         .readdirSync(directories.extensions)
         .filter(f => fs.statSync(path.join(directories.extensions, f)).isDirectory());
@@ -2716,6 +2735,7 @@ app.get('/discover_extensions', jsonParser, function (_, response) {
 });
 
 app.get('/get_sprites', jsonParser, function (request, response) {
+    console.log('/get_sprites')
     const name = request.query.name;
     const spritesPath = path.join(directories.characters, name);
     let sprites = [];
@@ -2857,6 +2877,7 @@ async function generateThumbnail(type, file) {
 }
 
 app.get('/thumbnail', jsonParser, async function (request, response) {
+    console.log('/thumbnail')
     const type = request.query.type;
     const file = sanitize(request.query.file);
 
@@ -2889,6 +2910,7 @@ app.get('/thumbnail', jsonParser, async function (request, response) {
 
 /* OpenAI */
 app.post("/getstatus_openai", jsonParser, function (request, response_getstatus_openai = response) {
+    console.log('/getstatus_openai')
     if (!request.body) return response_getstatus_openai.sendStatus(400);
 
     let api_url;
@@ -2917,6 +2939,7 @@ app.post("/getstatus_openai", jsonParser, function (request, response_getstatus_
         },
     };
     client.get(api_url + "/models", args, function (data, response) {
+        console.log('/models')
         if (response.statusCode == 200) {
             response_getstatus_openai.send(data);
             const modelIds = data?.data?.map(x => x.id)?.sort();
@@ -2940,6 +2963,7 @@ app.post("/getstatus_openai", jsonParser, function (request, response_getstatus_
 });
 
 app.post("/openai_bias", jsonParser, async function (request, response) {
+    console.log('/openai_bias')
     if (!request.body || !Array.isArray(request.body))
         return response.sendStatus(400);
 
@@ -2973,6 +2997,7 @@ app.post("/openai_bias", jsonParser, async function (request, response) {
 
 // Shamelessly stolen from Agnai
 app.post("/openai_usage", jsonParser, async function (request, response) {
+    console.log('/openai_usage')
     if (!request.body) return response.sendStatus(400);
     const key = readSecret(SECRET_KEYS.OPENAI);
 
@@ -3008,6 +3033,8 @@ app.post("/openai_usage", jsonParser, async function (request, response) {
 });
 
 app.post("/deletepreset_openai", jsonParser, function (request, response) {
+    console.log('/deletepreset_openai')
+
     if (!request.body || !request.body.name) {
         return response.sendStatus(400);
     }
@@ -3143,6 +3170,7 @@ async function sendClaudeRequest(request, response) {
 }
 
 app.post("/generate_openai", jsonParser, function (request, response_generate_openai) {
+    console.log('/generate_openai')
     if (!request.body) return response_generate_openai.status(400).send({ error: true });
 
     if (request.body.use_claude) {
@@ -3267,6 +3295,7 @@ app.post("/generate_openai", jsonParser, function (request, response_generate_op
 });
 
 app.post("/tokenize_openai", jsonParser, function (request, response_tokenize_openai = response) {
+    console.log('/tokenize_openai')
     if (!request.body) return response_tokenize_openai.sendStatus(400);
 
     let num_tokens = 0;
@@ -3301,6 +3330,7 @@ app.post("/tokenize_openai", jsonParser, function (request, response_tokenize_op
 });
 
 app.post("/savepreset_openai", jsonParser, function (request, response) {
+    console.log('/savepreset_openai')
     const name = sanitize(request.query.name);
     if (!request.body || !name) {
         return response.sendStatus(400);
@@ -3313,6 +3343,7 @@ app.post("/savepreset_openai", jsonParser, function (request, response) {
 });
 
 function createTokenizationHandler(getTokenizerFn) {
+    console.log('createTokenizationHandler')
     return async function (request, response) {
         if (!request.body) {
             return response.sendStatus(400);
@@ -3585,6 +3616,7 @@ function migrateSecrets() {
 }
 
 app.post('/writesecret', jsonParser, (request, response) => {
+    console.log('/writesecret');
     const key = request.body.key;
     const value = request.body.value;
 
@@ -3593,6 +3625,8 @@ app.post('/writesecret', jsonParser, (request, response) => {
 });
 
 app.post('/readsecretstate', jsonParser, (_, response) => {
+    console.log('/readsecretstate');
+
     if (!fs.existsSync(SECRETS_FILE)) {
         return response.send({});
     }
@@ -3616,6 +3650,7 @@ app.post('/readsecretstate', jsonParser, (_, response) => {
 const ANONYMOUS_KEY = "0000000000";
 
 app.post('/generate_horde', jsonParser, async (request, response) => {
+    console.log('/generate_horde');
     const api_key_horde = readSecret(SECRET_KEYS.HORDE) || ANONYMOUS_KEY;
     const url = 'https://horde.koboldai.net/api/v2/generate/text/async';
 
@@ -3639,6 +3674,8 @@ app.post('/generate_horde', jsonParser, async (request, response) => {
 });
 
 app.post('/viewsecrets', jsonParser, async (_, response) => {
+    console.log('/viewsecrets');
+
     if (!allowKeysExposure) {
         console.error('secrets.json could not be viewed unless the value of allowKeysExposure in config.conf is set to true');
         return response.sendStatus(403);
@@ -3660,16 +3697,21 @@ app.post('/viewsecrets', jsonParser, async (_, response) => {
 });
 
 app.post('/horde_samplers', jsonParser, async (_, response) => {
+    console.log('/horde_samplers');
     const samplers = Object.values(ai_horde.ModelGenerationInputStableSamplers);
     response.send(samplers);
 });
 
 app.post('/horde_models', jsonParser, async (_, response) => {
+    console.log('/horde_models');
+    
     const models = await ai_horde.getModels();
     response.send(models);
 });
 
 app.post('/horde_userinfo', jsonParser, async (_, response) => {
+    console.log('/horde_userinfo');
+
     const api_key_horde = readSecret(SECRET_KEYS.HORDE);
 
     if (!api_key_horde) {
@@ -3686,6 +3728,8 @@ app.post('/horde_userinfo', jsonParser, async (_, response) => {
 })
 
 app.post('/horde_generateimage', jsonParser, async (request, response) => {
+    console.log('/horde_generateimage');
+    
     const MAX_ATTEMPTS = 200;
     const CHECK_INTERVAL = 3000;
     const api_key_horde = readSecret(SECRET_KEYS.HORDE) || ANONYMOUS_KEY;
@@ -3747,6 +3791,8 @@ app.post('/horde_generateimage', jsonParser, async (request, response) => {
 });
 
 app.post('/google_translate', jsonParser, async (request, response) => {
+    console.log('/google_translate');
+
     const { generateRequestUrl, normaliseResponse } = require('google-translate-api-browser');
 
     const text = request.body.text;
@@ -3779,6 +3825,7 @@ app.post('/google_translate', jsonParser, async (request, response) => {
 });
 
 app.post('/deepl_translate', jsonParser, async (request, response) => {
+    console.log('/deepl_translate')
     const key = readSecret(SECRET_KEYS.DEEPL);
 
     if (!key) {
@@ -3826,6 +3873,7 @@ app.post('/deepl_translate', jsonParser, async (request, response) => {
 });
 
 app.post('/novel_tts', jsonParser, async (request, response) => {
+    console.log('/novel_tts')
     const token = readSecret(SECRET_KEYS.NOVEL);
 
     if (!token) {
@@ -3867,6 +3915,7 @@ app.post('/novel_tts', jsonParser, async (request, response) => {
 });
 
 app.post('/delete_sprite', jsonParser, async (request, response) => {
+    console.log('/delete_sprite')
     const label = request.body.label;
     const name = request.body.name;
 
@@ -3899,6 +3948,7 @@ app.post('/delete_sprite', jsonParser, async (request, response) => {
 });
 
 app.post('/upload_sprite_pack', urlencodedParser, async (request, response) => {
+    console.log('/upload_sprite_pack')
     const file = request.file;
     const name = request.body.name;
 
@@ -3946,6 +3996,8 @@ app.post('/upload_sprite_pack', urlencodedParser, async (request, response) => {
 });
 
 app.post('/upload_sprite', urlencodedParser, async (request, response) => {
+    console.log('/upload_sprite')
+
     const file = request.file;
     const label = request.body.label;
     const name = request.body.name;
@@ -3991,6 +4043,7 @@ app.post('/upload_sprite', urlencodedParser, async (request, response) => {
 });
 
 app.post('/import_custom', jsonParser, async (request, response) => {
+    console.log('/import_custom')
     if (!request.body.url) {
         return response.sendStatus(400);
     }
